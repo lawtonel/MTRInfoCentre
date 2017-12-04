@@ -1,10 +1,9 @@
 public class ControlCentre implements Controller {
     private Network network;
-    private TUI view;
 
     public ControlCentre() {
-        view = new TUI(this);
-        Network network = new Network();
+        network = new Network();
+        TUI view = new TUI(this);
     }
 
     @Override
@@ -14,7 +13,12 @@ public class ControlCentre implements Controller {
 
     @Override
     public String listStationsInLine(String line) {
-        return null;
+        if(network.getLinesByName().containsKey(line)){
+            Line requestedLine = network.getLinesByName().get(line);
+            return requestedLine.allStationsToString();
+        } else {
+            return null;
+        }
     }
 
     @Override

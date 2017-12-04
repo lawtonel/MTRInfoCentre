@@ -19,10 +19,11 @@ public class LinkedList<Station> {
 
     public void addStation(Station station) {
         LinearNode<Station> newStation = new LinearNode<>(station);
-        newStation.setNext(last);
+        last.setNext(newStation);
         last = newStation;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 

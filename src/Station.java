@@ -1,3 +1,5 @@
+/**Models an underground station that exists on the MTR network**/
+
 public class Station {
     private String name;
 
@@ -7,5 +9,10 @@ public class Station {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }
