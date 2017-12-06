@@ -30,7 +30,7 @@ public class LinkedList<Station> {
         LinearNode<Station> current = first;
         while (current != null) {
             sb.append(current.getStation().toString());
-            if (current.getStation() != null) {
+            if (current.getNext() != null) {
                 sb.append(", ");
                 current = current.getNext();
             } else {
