@@ -20,7 +20,4 @@ public class LinearNode<Station> {
         return station;
     }
 
-    public void setStation (Station station) {
-        this.station = station;
-    }
 }

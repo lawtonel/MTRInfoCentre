@@ -1,14 +1,18 @@
 public class ControlCentre implements Controller {
-    private Network network;
+    private final Network network;
 
     public ControlCentre() {
         network = new Network();
-        TUI view = new TUI(this);
+        new TUI(this);
     }
 
     @Override
     public String listAllTermini() {
-        return null;
+        StringBuilder result = new StringBuilder("Stations which are also termini on the MTR network are: \n");
+        for (Station terminus : network.getAllTermini()) {
+            result.append(terminus.toString()).append("\n");
+        }
+        return result.toString();
     }
 
     @Override

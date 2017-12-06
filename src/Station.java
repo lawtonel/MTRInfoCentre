@@ -1,7 +1,7 @@
 /**Models an underground station that exists on the MTR network**/
 
 public class Station {
-    private String name;
+    private final String name;
 
     public Station(String name) {
         this.name = name;

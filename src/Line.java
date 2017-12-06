@@ -2,8 +2,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Line {
-    private String name;
-    private LinkedList<Station> stations;
+    private final String name;
+    private final LinkedList<Station> stations;
 
     public Line(String name, LinkedList<Station> stations) {
         this.name = name;

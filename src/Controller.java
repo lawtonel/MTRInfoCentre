@@ -1,8 +1,4 @@
 /**
- *
- */
-
-/**
  * A controller for the MTR Information Centre system.
  * This controller includes the 4 features that the intended
  * prototype MTR Information Centre system is expected to have.
