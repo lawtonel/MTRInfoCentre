@@ -1,12 +1,14 @@
-public class LinkedList<Station> {
+public class LinkedList<Station>  {
     private LinearNode<Station> first;
     private LinearNode<Station> last;
+    private LinearNode<Station> current;
 
 
     // Creates initial linked list with one node
     public LinkedList(LinearNode<Station> first) {
         this.first = first;
         this.last = first;
+        this.current = first;
     }
 
     public LinearNode<Station> getFirst() {

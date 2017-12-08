@@ -27,7 +27,7 @@ public class ControlCentre implements Controller {
 
     @Override
     public String listAllDirectlyConnectedLines(String line) {
-        return null;
+        return network.connectedLines(line);
     }
 
     @Override
