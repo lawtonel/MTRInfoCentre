@@ -32,7 +32,7 @@ public class ControlCentre implements Controller {
 
     @Override
     public String showPathBetween(String stationA, String stationB) {
-        return null;
+        return network.pathFinder(stationA, stationB);
     }
 
     public static void main(String[] args) {

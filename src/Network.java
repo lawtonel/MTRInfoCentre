@@ -48,47 +48,35 @@ public class Network {
                 // Create new linked list of stations on that line, initialised with first node
                 Station initial = new Station(stationsStr[1], lineName);
 
-                Station initialToAdd = initial;
+                Station initialToAdd = getCorrectStation(initial);
 
-                // Add to all stations
-                if(allStations.contains(initial)){
-                    for(Station station: allStations){
-                        if(station.isStation(stationsStr[1])){
-                            initialToAdd = station;
-                            station.addLine(lineName);
-                        }
-                    }
-                } else {
-                    allStations.add(initial);
-                }
+
+                allStations.add(initialToAdd);
 
                 // Add to list of termini
                 allTermini.add(initialToAdd);
 
 
-
                 LinkedList<Station> stations = new LinkedList<>(new LinearNode<>(initialToAdd));
 
+                Station previousStation = initialToAdd;
+                if(stationsStr.length >= 3){
+                    initialToAdd.addConnection(getCorrectStation(new Station(stationsStr[2], lineName)));
+                }
 
                 for(int i = 2; i < stationsStr.length; i++) {
-                    Station station = new Station(stationsStr[i], lineName);
+                    Station station = getCorrectStation(new Station(stationsStr[i], lineName));
+                    allStations.add(station);
 
-                    Station stationForLine = station;
-
-                    if(allStations.contains(station)){
-                        for(Station stationSingle: allStations){
-                            if(stationSingle.isStation(stationsStr[i])){
-                                stationForLine = stationSingle;
-                                stationSingle.addLine(lineName);
-                            }
-                        }
-                    } else {
-                        allStations.add(stationForLine);
-                    }
-
-                    stations.addStation(stationForLine);
+                    stations.addStation(station);
                     if(i == stationsStr.length-1) {
-                        allTermini.add(stationForLine);
+                        allTermini.add(station);
+                    }
+                    station.addConnection(previousStation);
+                    previousStation = station;
+
+                    if(i <= stationsStr.length-2) {
+                        station.addConnection(getCorrectStation(new Station(stationsStr[i+1],lineName)));
                     }
                 }
 
@@ -131,6 +119,20 @@ public class Network {
     public String pathFinder(String location, String destination) {
 
         return null;
+    }
+
+    public Station getCorrectStation(Station station) {
+
+        if(allStations.contains(station)){
+            for(Station stationSingle: allStations){
+                if(stationSingle.isStation(station.getName())){
+                    stationSingle.addLine(station.getLine().get(0));
+                    return stationSingle;
+                }
+            }
+        }
+
+        return station;
     }
 
 }

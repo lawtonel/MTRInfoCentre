@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**Models an underground station that exists on the MTR network**/
@@ -8,14 +9,11 @@ public class Station {
     private ArrayList<String> lines;
     private Set<Station> connectedStations;
 
-    public Station(String name) {
-        this.name = name;
-        this.lines = null;
-    }
     public Station(String name, String line) {
         this.name = name;
         lines = new ArrayList<>();
         this.lines.add(line);
+        connectedStations = new HashSet<>();
     }
 
     public String getName() {
@@ -55,5 +53,13 @@ public class Station {
     @Override
     public boolean equals(Object obj) {
         return this.toString().equals(obj.toString());
+    }
+
+    public Set<Station> getConnectedStations() {
+        return connectedStations;
+    }
+
+    public void addConnection(Station station) {
+        connectedStations.add(station);
     }
 }
