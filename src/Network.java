@@ -135,4 +135,53 @@ public class Network {
         return station;
     }
 
+    public String getPathToStation(String start, String end) {
+        Station startStation = null;
+        for(Station station : allStations) {
+            if(station.getName().equals(start)) {
+                startStation = station;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        boolean found = false;
+        findStation:
+        while(true){
+            if(startStation != null) {
+                for (Station station : startStation.getConnectedStations()) {
+                    if (station.toString().equals(end)) {
+                        return start + " -> " + station.toString();
+                    } else {
+                        String otherPath = getPathToStation(station, end, start + " -> " + station.toString(), 1);
+                        if(otherPath.length() > 0){
+                            sb.append(otherPath);
+                            break findStation;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        return sb.toString();
+    }
+
+    private String getPathToStation(Station startStation, String end, String path, int cycles) {
+        StringBuilder sb = new StringBuilder();
+        if(cycles >= 3) {
+            for (Station station : startStation.getConnectedStations()) {
+                if (station.getName().equals(end)) {
+                    return path + " -> " + station.toString();
+                } else {
+                    String otherPath = getPathToStation(station, end, path + " -> " + station.toString(), cycles + 1);
+                    if (otherPath.length() > 0) {
+                        sb.append(otherPath);
+                        break;
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+
 }
