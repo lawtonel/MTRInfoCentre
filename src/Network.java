@@ -2,14 +2,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Network {
     private final Map<String, Line> linesByName;
     private final ArrayList<Station> allTermini;
-    private final ArrayList<Station> allStations;
+    private final Map<String, Station> allStations;
 
     public Network() {
 
@@ -31,7 +29,7 @@ public class Network {
         allTermini = new ArrayList<>(24);
 
         // Create an array list to store all stations and all their respective lines
-        allStations = new ArrayList<>();
+        allStations = new HashMap<>();
 
         // Create map to store line name (key) and line object (value)
         linesByName = new HashMap<>();
@@ -50,9 +48,6 @@ public class Network {
 
                 Station initialToAdd = getCorrectStation(initial);
 
-
-                allStations.add(initialToAdd);
-
                 // Add to list of termini
                 allTermini.add(initialToAdd);
 
@@ -61,12 +56,13 @@ public class Network {
 
                 Station previousStation = initialToAdd;
                 if(stationsStr.length >= 3){
-                    initialToAdd.addConnection(getCorrectStation(new Station(stationsStr[2], lineName)));
+                    initialToAdd.addConnection(
+                            getCorrectStation(new Station(stationsStr[2], lineName))
+                    );
                 }
 
                 for(int i = 2; i < stationsStr.length; i++) {
                     Station station = getCorrectStation(new Station(stationsStr[i], lineName));
-                    allStations.add(station);
 
                     stations.addStation(station);
                     if(i == stationsStr.length-1) {
@@ -121,67 +117,57 @@ public class Network {
         return null;
     }
 
-    public Station getCorrectStation(Station station) {
-
-        if(allStations.contains(station)){
-            for(Station stationSingle: allStations){
-                if(stationSingle.isStation(station.getName())){
-                    stationSingle.addLine(station.getLine().get(0));
-                    return stationSingle;
-                }
-            }
-        }
-
-        return station;
+    public Station findStationFromAllStations(String name) {
+        return allStations.get(name);
     }
 
-    public String getPathToStation(String start, String end) {
-        Station startStation = null;
-        for(Station station : allStations) {
-            if(station.getName().equals(start)) {
-                startStation = station;
-            }
+    public Station getCorrectStation(Station station) {
+        if(allStations.containsKey(station.getName())){
+            allStations.get(station.getName()).addLine(station.getLine().get(0));
+        } else {
+            allStations.put(station.getName(), station);
+        }
+        return allStations.get(station.getName());
+    }
+
+    public String getPathToStation(String start, String end){
+        // Find Stations
+        Station startStation = allStations.get(start);
+        Station endStation = allStations.get(end);
+
+        if(startStation == null || endStation == null) {
+            return "Could not find station(s)";
         }
 
-        StringBuilder sb = new StringBuilder();
+        startStation.setPath(startStation + " -> ");
 
-        boolean found = false;
-        findStation:
-        while(true){
-            if(startStation != null) {
-                for (Station station : startStation.getConnectedStations()) {
-                    if (station.toString().equals(end)) {
-                        return start + " -> " + station.toString();
-                    } else {
-                        String otherPath = getPathToStation(station, end, start + " -> " + station.toString(), 1);
-                        if(otherPath.length() > 0){
-                            sb.append(otherPath);
-                            break findStation;
-                        }
-                    }
-                }
+        Deque<Station> stack = new ArrayDeque<>();
+        Set<Station> trash = new HashSet<>();
+
+        stack.push(startStation);
+
+        while(trash.size() != allStations.size()){
+            Station thisStation;
+
+            if(stack.size() != 0) {
+                thisStation = stack.pop();
+            } else {
                 break;
             }
-        }
-        return sb.toString();
-    }
-
-    private String getPathToStation(Station startStation, String end, String path, int cycles) {
-        StringBuilder sb = new StringBuilder();
-        if(cycles >= 3) {
-            for (Station station : startStation.getConnectedStations()) {
-                if (station.getName().equals(end)) {
-                    return path + " -> " + station.toString();
-                } else {
-                    String otherPath = getPathToStation(station, end, path + " -> " + station.toString(), cycles + 1);
-                    if (otherPath.length() > 0) {
-                        sb.append(otherPath);
-                        break;
+            for(Station station : thisStation.getConnectedStations()) {
+                if(!trash.contains(station)) {
+                    if (station.toString().equals(endStation.toString())) {
+                        return thisStation.getPath() + endStation.toString();
+                    } else {
+                        station.setPath(thisStation.getPath() + station.toString() + " -> ");
+                        stack.push(station);
                     }
                 }
             }
+            trash.add(thisStation);
         }
-        return sb.toString();
+
+        return "Couldn't find route";
     }
 
 }

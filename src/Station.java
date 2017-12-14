@@ -8,6 +8,7 @@ public class Station {
     private String name;
     private ArrayList<String> lines;
     private Set<Station> connectedStations;
+    private String path;
 
     public Station(String name, String line) {
         this.name = name;
@@ -61,5 +62,13 @@ public class Station {
 
     public void addConnection(Station station) {
         connectedStations.add(station);
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
