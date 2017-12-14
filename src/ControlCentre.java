@@ -1,3 +1,6 @@
+/**The Control Centre takes input from the TUI (View) and communicates with the
+ * rest of the MTR Info Centre model to get the data required to respond to user queries.**/
+
 public class ControlCentre implements Controller {
     private final Network network;
 
@@ -35,8 +38,8 @@ public class ControlCentre implements Controller {
         return network.getPathToStation(stationA, stationB);
     }
 
+    //Create ControlCentre and launch info centre
     public static void main(String[] args) {
-        //Create ControlCentre
         Controller controller = new ControlCentre();
     }
 }

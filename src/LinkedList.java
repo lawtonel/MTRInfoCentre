@@ -1,3 +1,6 @@
+/**The LinkedList class models nodes that are connected to each other via a singly linked list.
+ * This is then used in the Line class to model stations on a line in the MTR Network**/
+
 public class LinkedList<Station>  {
     private LinearNode<Station> first;
     private LinearNode<Station> last;
@@ -13,10 +16,6 @@ public class LinkedList<Station>  {
 
     public LinearNode<Station> getFirst() {
         return first;
-    }
-
-    public LinearNode<Station> getLast() {
-        return last;
     }
 
     public void addStation(Station station) {

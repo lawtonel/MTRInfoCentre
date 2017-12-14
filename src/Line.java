@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Set;
+/**The Line class models an individual line of the MTR network.  Stations on the line are modelled as a LinkedList**/
 
 public class Line {
     private final String name;
